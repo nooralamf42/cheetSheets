@@ -1,30 +1,31 @@
 Git Cheat Sheet:
 
-- **git status**: Show the status of the current directory.
+    git status: Show the status of the current directory.
 
-- **git init**: Initialize Git in the current directory.
+    git init: Initialize Git in the current directory.
 
-- **git add**: Add a file to be tracked for changes.
-  - **git add .**: Add all files in the current directory to be tracked for changes.
+    git add: Add a file to be tracked for changes.
+        git add .: Add all files in the current directory to be tracked for changes.
 
-- **git commit -m "my first commit"**: Commit the changes with a message.
+    git commit -m "my first commit": Commit the changes with a message.
 
-- **git log**: Show all the commits that were made.
-  - Press "Enter" to see more available commits.
-  - Press "q" to cancel showing more commits.
+    git log: Show all the commits that were made.
+        Press "Enter" to see more available commits.
+        Press "q" to cancel showing more commits.
 
-- **git log -n**: Show the last 'n' number of commits. (Replace 'n' with the desired number of commits)
+    git log -n: Show the last 'n' number of commits. (Replace 'n' with the desired number of commits)
 
-- **git log -p**: Show all commits with details on what files have been changed or updated and their changes.
+    git log -p: Show all commits with details on what files have been changed or updated and their changes.
 
-- **git log --stat**: Show all commits with details on what files have been changed.
+    git log --stat: Show all commits with details on what files have been changed.
 
-- **git log --oneline**: Show all commits with just the short SHA ID and commit name.
+    git log --oneline: Show all commits with just the short SHA ID and commit name.
 
-- **git show commit_sha_id**: Show the code changes of the specific commit identified by its SHA ID. (Replace 'commit_sha_id' with the actual SHA ID of the commit)
+    git show commit_sha_id: Show the code changes of the specific commit identified by its SHA ID. (Replace 'commit_sha_id' with the actual SHA ID of the commit)
 
 Notes:
-- Always double-check your commands and explanations for accuracy and clarity.
-- The commit message is crucial as it describes the changes made in the commit.
-- Use the options like -p, --stat, and --oneline in git log to get specific information about commits.
-- Remember to replace placeholders like 'n' and 'commit_sha_id' with actual values when using the commands.
+
+    Always double-check your commands and explanations for accuracy and clarity.
+    The commit message is crucial as it describes the changes made in the commit.
+    Use the options like -p, --stat, and --oneline in git log to get specific information about commits.
+    Remember to replace placeholders like 'n' and 'commit_sha_id' with actual values when using the commands.
