@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Hooks Cheat Sheet</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>React Hooks Cheat Sheet</h1>
+
+    <div class="hook-section">
+        <h2>useState</h2>
+        <p>Manages state within functional components. Allows you to declare a state variable and a function to update it. React will re-render the component when the state changes.</p>
+        <pre><code>const [count, setCount] = useState(0);
+
+// In your component's return:
+// &lt;div&gt;
+//   &lt;p&gt;You clicked {count} times&lt;/p&gt;
+//   &lt;button onClick={() =&gt; setCount(count + 1)}&gt;
+//     Click me
+//   &lt;/button&gt;
+// &lt;/div&gt;</code></pre>
+        <button>Copy Code</button>
+    </div>
+
+    <div class="hook-section">
+        <h2>useEffect</h2>
+        <p>Performs side effects in functional components. It runs after every render by default, but you can control when it runs by providing a dependency array. Common uses include data fetching, subscriptions, or manually changing the DOM.</p>
+        <pre><code>// Assuming 'count' is a state variable
+useEffect(() => {
+  document.title = `You clicked ${count} times`;
+
+  // Cleanup function (optional)
+  return () => {
+    // This runs when the component unmounts or before the effect runs again
+    // console.log('Effect cleanup');
+  };
+}, [count]); // Only re-run the effect if 'count' changes</code></pre>
+        <button>Copy Code</button>
+    </div>
+
+    <div class="hook-section">
+        <h2>useContext</h2>
+        <p>Provides a way to pass data through the component tree without having to pass props down manually at every level. Useful for sharing global data like themes, user info, etc.</p>
+        <pre><code>// 1. Create a Context
+// MyContext.js
+// import React from 'react';
+// export const MyContext = React.createContext();
+
+// 2. Provide the Context value
+// App.js (or a parent component)
+// import { MyContext } from './MyContext';
+// ...
+// &lt;MyContext.Provider value="some value"&gt;
+//   &lt;ChildComponent /&gt;
+// &lt;/MyContext.Provider&gt;
+
+// 3. Consume the Context value
+// ChildComponent.js
+// import React, { useContext } from 'react';
+// import { MyContext } from './MyContext';
+
+// function ChildComponent() {
+//   const value = useContext(MyContext);
+//   return &lt;div&gt;Context Value: {value}&lt;/div&gt;;
+// }</code></pre>
+        <button>Copy Code</button>
+    </div>
+
+    <div class="hook-section">
+        <h2>useReducer</h2>
+        <p>An alternative to useState for managing more complex state logic, especially when state transitions depend on the previous state or involve multiple sub-values. It uses a reducer function to update state based on dispatched actions.</p>
+        <pre><code>const initialState = { count: 0 };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + 1 };
+    case 'decrement':
+      return { count: state.count - 1 };
+    default:
+      throw new Error();
+  }
+}
+
+// In your component:
+// const [state, dispatch] = useReducer(reducer, initialState);
+//
+// &lt;div&gt;
+//   Count: {state.count}
+//   &lt;button onClick={() =&gt; dispatch({ type: 'decrement' })}&gt;-&lt;/button&gt;
+//   &lt;button onClick={() =&gt; dispatch({ type: 'increment' })}&gt;+&lt;/button&gt;
+// &lt;/div&gt;</code></pre>
+        <button>Copy Code</button>
+    </div>
+
+    <div class="hook-section">
+        <h2>useCallback</h2>
+        <p>Returns a memoized callback function. This is useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders. The callback is only recreated if one of its dependencies changes.</p>
+        <pre><code>// ParentComponent.js
+// import React, { useState, useCallback } from 'react';
+// import ChildComponent from './ChildComponent';
+
+// function ParentComponent() {
+//   const [count, setCount] = useState(0);
+
+//   // Without useCallback, handleClick would be a new function on every render
+//   const handleClick = useCallback(() => {
+//     console.log('Button clicked!');
+//     // Potentially use 'count' or other dependencies here
+//   }, []); // Dependencies array: if empty, created once
+
+//   return (
+//     &lt;div&gt;
+//       &lt;p&gt;Count: {count}&lt;/p&gt;
+//       &lt;button onClick={() =&gt; setCount(count + 1)}&gt;Increment Count&lt;/button&gt;
+//       &lt;ChildComponent onButtonClick={handleClick} /&gt;
+//     &lt;/div&gt;
+//   );
+// }
+
+// ChildComponent.js (often memoized with React.memo)
+// const ChildComponent = React.memo(({ onButtonClick }) => {
+//   console.log('ChildComponent rendering');
+//   return &lt;button onClick={onButtonClick}&gt;Click Me (Child)&lt;/button&gt;;
+// });
+// export default ChildComponent;</code></pre>
+        <button>Copy Code</button>
+    </div>
+
+    <div class="hook-section">
+        <h2>useMemo</h2>
+        <p>Returns a memoized value. It recomputes the memoized value only when one of the dependencies has changed. This optimization helps to avoid expensive calculations on every render.</p>
+        <pre><code>import React, { useState, useMemo } from 'react';
+
+// function MyComponent() {
+//   const [number, setNumber] = useState(10);
+//   const [anotherState, setAnotherState] = useState(false);
+
+//   // This expensive calculation only runs when 'number' changes
+//   const expensiveCalculation = (num) => {
+//     console.log('Calculating...');
+//     for (let i = 0; i < 1000000000; i++) {} // Simulate expensive work
+//     return num * 2;
+//   };
+
+//   const doubledNumber = useMemo(() => {
+//     return expensiveCalculation(number);
+//   }, [number]); // Dependency array
+
+//   return (
+//     &lt;div&gt;
+//       &lt;p&gt;Original Number: {number}&lt;/p&gt;
+//       &lt;p&gt;Doubled Number (Memoized): {doubledNumber}&lt;/p&gt;
+//       &lt;button onClick={() =&gt; setNumber(number + 1)}&gt;Increment Number&lt;/button&gt;
+//       &lt;button onClick={() =&gt; setAnotherState(!anotherState)}&gt;Toggle Other State&lt;/button&gt;
+//     &lt;/div&gt;
+//   );
+// }</code></pre>
+        <button>Copy Code</button>
+    </div>
+
+    <div class="hook-section">
+        <h2>useRef</h2>
+        <p>Returns a mutable ref object whose `.current` property is initialized to the passed argument (initialValue). It can be used to access a DOM element directly or to keep a mutable value that does not cause a re-render when it changes.</p>
+        <pre><code>import React, { useRef, useEffect } from 'react';
+
+// function MyComponent() {
+//   const inputRef = useRef(null);
+//   const someMutableValue = useRef(0); // Does not trigger re-render
+
+//   useEffect(() => {
+//     // Focus the input element on component mount
+//     inputRef.current.focus();
+//   }, []);
+
+//   const handleButtonClick = () => {
+//     someMutableValue.current += 1;
+//     console.log('Current mutable value:', someMutableValue.current);
+//     // Note: Updating someMutableValue.current does not re-render the component
+//   };
+
+//   return (
+//     &lt;div&gt;
+//       &lt;input ref={inputRef} type="text" placeholder="Focus me on mount" /&gt;
+//       &lt;button onClick={handleButtonClick}&gt;Increment Mutable Value&lt;/button&gt;
+//     &lt;/div&gt;
+//   );
+// }</code></pre>
+        <button>Copy Code</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
